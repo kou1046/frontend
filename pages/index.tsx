@@ -1,9 +1,42 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { SendBtn } from '../components/SendBtn'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import Button from "@mui/material/Button"
+import ButtonGroup from "@mui/material/ButtonGroup"
+import { Group, Frame } from "./interfaces/basetype"
+import FrameInfo from "../components/FrameInfo"
+
+axios.defaults.baseURL = 'http://localhost:8000/api'
+
 
 export default function Home() {
+
+  const [groups, setGroups] = useState<Array<Group>>([])
+  const [frames, setFrames] = useState<Array<Frame>>([])
+  
+  const fetchGroups = async () => {
+    const groupData: Group[] = await axios.get('/group')
+    .then(res => res.data);
+    setGroups(groupData);
+  }
+
+  const fetchFrames = async (g_name:string) => {
+    const frameData: Array<Frame> = await axios.get('/frame', {
+      params : {
+        name : g_name
+      }
+    })
+    .then(res => res.data)
+    setFrames(frameData)
+  }
+
+  useEffect(() => {
+    fetchGroups()
+    fetchFrames('G2')
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -12,10 +45,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <SendBtn></SendBtn>
+      <main>
+        <ButtonGroup>
+              {groups.map((el:Group, i:number) => {
+                return <Button key={'group-' + String(i)} onClick={() => fetchFrames(el.name)}>{el.name}</Button>
+              })}
+        </ButtonGroup>
+        <FrameInfo {...frames[0]} />
       </main>
-
     </div>
   )
 }
