@@ -5,6 +5,7 @@ export interface Group {
 export interface Frame {
     frame : number;
     img_path : string;
+    img : string;
     group : Group;
     people : Array<Person>;
   }
@@ -12,8 +13,6 @@ export interface Frame {
 export interface Person {
     keypoints : Keypoints;
     box : BoundingBox
-    frame_num : number
-    frame_img_path : string
 }
 
 export interface Keypoints {
