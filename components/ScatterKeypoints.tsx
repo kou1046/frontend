@@ -22,7 +22,6 @@ export const ScatterKeypoints = ({people}:PeopleProps) => {
             return {label:label, data:data}
         })
         }
-    console.log(data)
     const options = {
         scales: {
             y: {

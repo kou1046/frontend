@@ -1,3 +1,5 @@
+import internal from "stream";
+
 export interface Group {
     name : string;
   }
@@ -12,7 +14,8 @@ export interface Frame {
 
 export interface Person {
     keypoints : Keypoints;
-    box : BoundingBox
+    box : BoundingBox;
+    img : string | undefined;
 }
 
 export interface Keypoints {
@@ -55,4 +58,16 @@ export interface Point {
     x: number;
     y: number;
     p: number;
+}
+
+export interface ITeacher {
+    person: Person;
+    label: number;
+}
+
+export interface PageNationTeacher {
+    count:number;
+    next:string | null;
+    previous:string | null;
+    results:Array<ITeacher>;
 }

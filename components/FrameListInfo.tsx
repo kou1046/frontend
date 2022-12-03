@@ -26,7 +26,7 @@ export interface FramesProps {
 export const FrameListInfo = ({frames}:FramesProps) => {
 
     return <>
-        <Grid container spacing={1} justifyContent='center'>
+        <Grid container spacing={1} justifyContent='center'> 
             {frames.map((frame, i) => {
                 return <Grid key={'grid-' + frame.group.name}>
                     <FrameInfo {...frame} key={frame.group.name}></FrameInfo>
