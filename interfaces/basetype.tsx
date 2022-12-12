@@ -13,9 +13,10 @@ export interface Frame {
   }
 
 export interface Person {
+    id: string;
     keypoints : Keypoints;
     box : BoundingBox;
-    img : string | undefined;
+    img : string;
 }
 
 export interface Keypoints {

@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Person, Point, Keypoints } from "../pages/interfaces/basetype"
+import { Person, Point, Keypoints } from "../interfaces/basetype"
 import Grid from "@mui/material/Grid"
 import Paper from '@mui/material/Paper';
 import { Scatter } from 'react-chartjs-2'

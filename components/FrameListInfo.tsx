@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Frame } from "../pages/interfaces/basetype"
+import { Frame } from "../interfaces/basetype"
 import Grid from "@mui/material/Grid"
 import Paper from '@mui/material/Paper';
 import { ScatterKeypoints } from "./ScatterKeypoints";
