@@ -1,4 +1,4 @@
-import internal from "stream";
+import axios from "axios";
 
 export interface Group {
     name : string;
@@ -16,7 +16,13 @@ export interface Person {
     id: string;
     keypoints : Keypoints;
     box : BoundingBox;
-    img : string;
+    img: string;
+}
+
+export interface Person2 {
+    id: string;
+    box: BoundingBox; 
+    frameNum: number;
 }
 
 export interface Keypoints {
@@ -62,7 +68,7 @@ export interface Point {
 }
 
 export interface ITeacher {
-    person: Person;
+    person: string,
     label: number;
 }
 

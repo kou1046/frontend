@@ -1,71 +1,71 @@
 import { useEffect, useState } from "react";
-import { Person } from "../interfaces/basetype"
+import { ITeacher, Person } from "../interfaces/basetype"
 import Image from "next/image";
 import axios from "axios";
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
+import { RSC_MODULE_TYPES } from "next/dist/shared/lib/constants";
 
+type PropsType = {
+    labels: Array<string>
+    teacherType: string
+};
 
-export const PersonAnnotator = () => {
+export const PersonAnnotator = ({teacherType, labels}: PropsType) => {
 
     const [people, setPeople] = useState<Array<Person>>([]);
     const [index, setIndex] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const fetchPeople = () => {
-        if (!isLoading) {
-            return
-        }
-        axios.get('/wth/add/').then(res => setPeople(res.data));
-        setIsLoading(state => false)
+    const fetchPeople = async () => {
+        const res = await axios.get(`/${teacherType}/add/`);
+        setPeople(res.data);
     }
 
-    const send = (e: any ,label: number) => {
+    const send = async (e: any ,label: number) => {
         const sendData = {
             person: people[index].id,
             label: label
         }
-        axios.post('/wth/', sendData).then(res => console.log(res.data))
+        const res = await axios.post(`/${teacherType}/`, sendData)
         if (index+1 === people.length){
             setPeople([]);
             setIndex(0);
-            setIsLoading(true);
         } else {
             setIndex(i => i+1)
         }
     }
 
+    useEffect(() => {
+        const promise = fetchPeople()
+    }, [])
+
     return <>
-        <Box sx={{textAlign:'center', mt:5 }}>
             {people.length ?
-                <Paper elevation={20} sx={{textAlign:'center', display:'inline-block', p:5} }>
-                    <Box component={'p'}>What do the children in the red box have?</Box>
+            <Paper elevation={20}>
+                <Box sx={{textAlign: 'center', m:3}}>
                     <Image 
                         src={`data:image/jpeg;base64,${people[index].img}`} 
                         alt={`person-${people[index].box.id}`} 
-                        width={300}
-                        height={180}
+                        width={400}
+                        height={300}
                         />
                     <ButtonGroup sx={{display:'flex', justifyContent:'center'}}>
-                        {['Nothing', 'Pen', 'Microcomputer'].map((el, i) => <Button 
-                                                                             variant="contained"
-                                                                             color='error'
-                                                                             key={`btn-${i}`}
-                                                                             onClick={(e) => send(e, i)}
-                                                                             >{el}
-                                                                             </Button>
-                                                                             )}
+                        {labels.map((el, i) => <Button 
+                                                variant="contained"
+                                                key={`btn-${i}`}
+                                                onClick={(e) => send(e, i)}
+                                                >{el}
+                                                </Button>
+                                                )}
                     </ButtonGroup>
-                    <Box component={'h2'}>{index+1}/{people.length}</Box>
-                </Paper>
+                </Box>
+            </Paper>
             :
             <>
-                {fetchPeople()}
                 読み込み中．．．
             </>
             }
-        </Box>
     </>
 }
