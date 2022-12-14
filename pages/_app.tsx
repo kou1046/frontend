@@ -4,7 +4,6 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Chart, registerables } from 'chart.js';
 
-
 axios.defaults.baseURL = 'http://133.62.185.133:8000/api'
 Chart.register(...registerables);
 

@@ -16,13 +16,13 @@ export interface Person {
     id: string;
     keypoints : Keypoints;
     box : BoundingBox;
-    img: string;
 }
 
 export interface Person2 {
-    id: string;
-    box: BoundingBox; 
+    id: string; 
     frameNum: number;
+    group: string;
+    box: BoundingBox;
 }
 
 export interface Keypoints {
@@ -72,9 +72,14 @@ export interface ITeacher {
     label: number;
 }
 
+export interface ITeacher2 {
+    person: Person2, 
+    label: number
+}
+
 export interface PageNationTeacher {
     count:number;
     next:string | null;
     previous:string | null;
-    results:Array<ITeacher>;
+    results:Array<ITeacher2>;
 }

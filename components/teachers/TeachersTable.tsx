@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import { Pagination } from '@mui/material';
 import Image from 'next/image';
 import axios from 'axios';
-import {PageNationTeacher} from '../interfaces/basetype'
+import {PageNationTeacher} from '../../interfaces/basetype'
 import { useEffect, useState } from 'react';
 
 
@@ -48,13 +48,17 @@ export const TeachersTable = ({teacherType, limit}:PropsType) => {
           <TableHead>
             <TableRow>
               <TableCell>Person</TableCell>
+              <TableCell>Group</TableCell>
+              <TableCell>Frame</TableCell>
               <TableCell>Label</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {teachersData?.results.map((el, i) => {
               return <TableRow key={'row-' + i.toString()}>
-                        <TableCell><a href='#!' onClick={() => fetchPerson(el.person)}>{el.person}</a></TableCell>
+                        <TableCell><a href='#!' onClick={() => fetchPerson(el.person.id)}>{el.person.id}</a></TableCell>
+                        <TableCell>{el.person.group}</TableCell>
+                        <TableCell>{el.person.frameNum}</TableCell>
                         <TableCell>{el.label}</TableCell>
                      </TableRow>
             })}
