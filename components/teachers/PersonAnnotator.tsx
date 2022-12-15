@@ -54,14 +54,14 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
     }
 
     useEffect(() => {
-        const promise = fetchPeople()
+        fetchPeople()
     }, [])
 
     return <>
             {people.length ?
                 <Box sx={{textAlign: 'center', m:3}}>
                     <Box component={'h1'}>Add teacher</Box>
-                    <Image 
+                    <img
                         src={`data:image/jpeg;base64,${personImg}`} 
                         alt={`person-${people[index].box.id}`} 
                         width={400}
@@ -79,7 +79,7 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
                 </Box>
             :
             <>
-                読み込み中．．．
+                Now Loading...
             </>
             }
     </>

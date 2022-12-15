@@ -1,9 +1,8 @@
 import { BoundingBox, ITeacher2, Person2 } from "../../interfaces/basetype"
-import Paper from '@mui/material/Paper';
-import { Scatter, getElementAtEvent, getDatasetAtEvent } from 'react-chartjs-2'
-import { forwardRef, MutableRefObject, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { Scatter, getElementAtEvent} from 'react-chartjs-2'
+import { Chart, ScatterDataPoint } from "chart.js";
+import { useEffect, useRef, useState, memo } from "react";
 import axios from "axios";
-
 
 type PlotData = Array<Array<ITeacher2>>;
 
@@ -12,30 +11,17 @@ type PropsType = {
     newTeacherState?: ITeacher2; 
 };
 
-export const ScatterTeachersDistribution = ({teacherType, newTeacherState}: PropsType) => {
+export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribution({teacherType, newTeacherState}: PropsType) {
 
     const [plotData, setPlotData] = useState<PlotData>([]);
-    const chartRef = useRef(null!);
+    const chartRef = useRef<Chart<"scatter">>(null);
 
     const fetchPlotData = async () => {
         const res = await axios.get(`/${teacherType}/distribution/`);
         setPlotData(res.data)
     }
 
-    const dataOnClick = (e: any) => {
-        const clickedElement = getElementAtEvent(chartRef.current, e)
-        console.log(clickedElement)
-    }
-
-    const addPlotData = (newTeacher: ITeacher2) => {
-        setPlotData(data => {
-            data[newTeacher.label] = [...data[newTeacher.label], ...[newTeacher]]
-            return JSON.parse(JSON.stringify(data))
-        })
-    }
-
     const renderData = () => {
-
         const colors = ['#000000', '#FF0000', '#0067c0', '#4db56a']
         const data = {
             datasets: plotData.map((teachers, i) => {
@@ -49,34 +35,63 @@ export const ScatterTeachersDistribution = ({teacherType, newTeacherState}: Prop
         
         const options = {
             maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    text: 'Distribution',
+                    display: true, 
+                    color: 'black',
+                    font: {
+                        size: 18,
+                    }
+                }
+            },
             scales: {
                 x: {
                     min: 0,
-                    max: 1400,
                     title: {
                         display: true, 
-                        text: 'x [px]'
+                        text: 'x [px]',
+                        color: 'black'
+                    },
+                    border: {
+                        color: 'black'
+                    },
+                    grid: {
+                        color: 'black'
+                    },
+                    ticks: {
+                        color: "black",
                     }
                 },
                 y: {
                     display: true,
                     min: 0,
-                    max: 7000, 
                     title: {
                         display: true, 
-                        text: 'Time [sec]'
+                        text: 'Time [sec]',
+                        color: 'black'
+                    }, 
+                    border: {
+                        color: 'black'
+                    },
+                    grid: {
+                        color: 'black'
+                    },
+                    ticks: {
+                        color: "black"
                     }
                 }, 
                
             }
           }
       
-        return <Scatter 
-                ref={chartRef} 
-                data={data} 
-                options={options}
-                onClick={dataOnClick}
-                ></Scatter>
+        return <>
+                 <Scatter 
+                    ref={chartRef} 
+                    data={data} 
+                    options={options}
+                  />
+               </>
     }
 
     useEffect(() => {
@@ -85,12 +100,14 @@ export const ScatterTeachersDistribution = ({teacherType, newTeacherState}: Prop
 
     useEffect(() => {
         if (newTeacherState){
-            addPlotData(newTeacherState)
+            setPlotData(data => {
+                data[newTeacherState.label] = [...data[newTeacherState.label], ...[newTeacherState]]
+                return JSON.parse(JSON.stringify(data))
+            })
         }
     }, [newTeacherState])
 
     return <>
         {renderData()}
     </>
-
-}
+})

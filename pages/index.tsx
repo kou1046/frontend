@@ -11,7 +11,7 @@ export default function Home() {
   const [frames, setFrames] = useState<Array<Frame>>([])
 
   const fetchFrames = (frameNum:number) => {
-    axios.get('/frame/' + frameNum.toString(), {
+    axios.get('/frames/' + frameNum.toString(), {
       params:{
         num:frameNum
       }

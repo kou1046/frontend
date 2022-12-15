@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import { Pagination } from '@mui/material';
 import Image from 'next/image';
 import axios from 'axios';
-import {PageNationTeacher} from '../../interfaces/basetype'
+import {ITeacher2, PageNationContents} from '../../interfaces/basetype'
 import { useEffect, useState } from 'react';
 
 
@@ -18,7 +18,7 @@ type PropsType = {
 
 export const TeachersTable = ({teacherType, limit}:PropsType) => {
 
-    const [teachersData, setTeachersData] = useState<PageNationTeacher>();
+    const [teachersData, setTeachersData] = useState<PageNationContents<ITeacher2>>();
 
     const fetchTeachers = async (pageNum: number) => {
       const offset = (pageNum - 1) * limit

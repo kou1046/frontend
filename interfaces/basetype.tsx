@@ -6,10 +6,9 @@ export interface Group {
   
 export interface Frame {
     frame : number;
-    img_path : string;
-    img : string;
     group : Group;
     people : Array<Person>;
+    device: Device | string;
   }
 
 export interface Person {
@@ -68,18 +67,47 @@ export interface Point {
 }
 
 export interface ITeacher {
-    person: string,
+    person: string;
     label: number;
 }
 
 export interface ITeacher2 {
-    person: Person2, 
+    person: Person2; 
     label: number
 }
 
-export interface PageNationTeacher {
-    count:number;
-    next:string | null;
-    previous:string | null;
-    results:Array<ITeacher2>;
+export interface MousePos {
+    x: number; 
+    y: number; 
+    time: string; 
+    frame: string; 
+}
+
+export interface MouseClick {
+    time: string; 
+    x: number;
+    y: number; 
+    frame: string; 
+}
+
+export interface MouseRelease {
+    x: number; 
+    y: number; 
+    time: string; 
+    frame: string; 
+}
+
+export interface Device {
+    mousePos: MousePos | string;
+    mouseClick: MouseClick | string; 
+    mouseRelease: MouseRelease | string; 
+    group: Group | string;
+    id: string;
+}
+
+export interface PageNationContents<T> {
+    count: number; 
+    next: string | null; 
+    previous: string | null; 
+    results: Array<T>
 }
