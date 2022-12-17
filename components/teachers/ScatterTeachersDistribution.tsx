@@ -1,8 +1,9 @@
-import { BoundingBox, ITeacher2, Person2 } from "../../interfaces/basetype"
+import { ITeacher2, Person2 } from "../../interfaces/basetype"
 import { Scatter, getElementAtEvent} from 'react-chartjs-2'
-import { Chart, ScatterDataPoint } from "chart.js";
+import { Chart } from "chart.js";
 import { useEffect, useRef, useState, memo } from "react";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 type PlotData = Array<Array<ITeacher2>>;
 
@@ -11,6 +12,7 @@ type PropsType = {
     newTeacherState?: ITeacher2; 
 };
 
+
 export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribution({teacherType, newTeacherState}: PropsType) {
 
     const [plotData, setPlotData] = useState<PlotData>([]);
@@ -18,7 +20,7 @@ export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribu
 
     const fetchPlotData = async () => {
         const res = await axios.get(`/${teacherType}/distribution/`);
-        setPlotData(res.data)
+        setPlotData(res.data);
     }
 
     const renderData = () => {
@@ -29,12 +31,18 @@ export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribu
                     return {x: teacher.person.box.xmax, y: teacher.person.frameNum / 25}
                 })
                 const order = plotData.length - i
-                return {data: data, label: i.toString() + ` (${data.length})`, backgroundColor: colors[i], order: order}
+                return {data: data,
+                        label: i.toString() + ` (${data.length})`,
+                        backgroundColor: colors[i], 
+                        order: order,
+                        pointRadius: 2.
+                    }
             })
         }
         
         const options = {
             maintainAspectRatio: false,
+            responsive: false,
             plugins: {
                 title: {
                     text: 'Distribution',
@@ -90,6 +98,8 @@ export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribu
                     ref={chartRef} 
                     data={data} 
                     options={options}
+                    width={400}
+                    height={400}
                   />
                </>
     }
@@ -108,6 +118,6 @@ export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribu
     }, [newTeacherState])
 
     return <>
-        {renderData()}
+        {plotData.length ? renderData() : <CircularProgress />}
     </>
 })

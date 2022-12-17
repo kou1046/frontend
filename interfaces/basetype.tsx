@@ -5,9 +5,10 @@ export interface Group {
   }
   
 export interface Frame {
+    id: string;
     frame : number;
     group : Group;
-    people : Array<Person>;
+    people : Array<Person | string>;
     device: Device | string;
   }
 

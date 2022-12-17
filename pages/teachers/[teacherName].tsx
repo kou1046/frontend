@@ -5,19 +5,42 @@ import { PersonAnnotator } from "../../components/teachers/PersonAnnotator";
 import { ScatterTeachersDistribution } from "../../components/teachers/ScatterTeachersDistribution";
 import { TeachersTable } from "../../components/teachers/TeachersTable";
 import { useEffect, useState } from "react";
+import { DashBoard } from "../../components/DashBoard";
+import { Grid } from "@mui/material";
 import { ITeacher2 } from "../../interfaces/basetype";
+import { GetStaticProps, GetStaticPaths } from "next";
 
-export default function Home () {
+type PathParams = {
+  teacherName: string;
+}
 
-    const router = useRouter(); 
-    const teacherName = router.query.teacherName as string
+export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
+ 
+  return {
+    paths: ["wd", "programming", "wth"].map(el => (
+      {
+        params: {teacherName: el}
+      }
+    )), 
+    fallback: false  // 上記以外のパスでアクセスした場合は 404 ページにする
+  }
+}
+
+export const getStaticProps: GetStaticProps<PathParams> = async context => {
+  const { teacherName } = context.params as PathParams
+
+  const props: PathParams = {
+    teacherName: teacherName
+  }
+
+  return { props }
+}
+
+export default function Home ({teacherName}: PathParams) {
+
     const [newData, setNewData] = useState<ITeacher2>();
     const [open, setIsOpen] = useState<boolean>(false);
     const labels =  teacherName === "wth" ? ["Nothing", "Pen", "Microcomputer"] : ['Negative', "Positive"]
-
-    if (!router.isReady){
-        return null
-    }
 
     const onRegist = (newTeacher: ITeacher2) => {
         setNewData(newTeacher);
@@ -33,18 +56,28 @@ export default function Home () {
          autoHideDuration={2000}
          message={`Registration success! id: ${newData?.person.id}`}
         />
-        <Paper elevation={20} sx={{m: 3,  display: 'flex', justifyContent:'center', alignItems: 'center'}}>
-          <PersonAnnotator 
-           teacherType={teacherName}
-           labels={labels}
-           callbackRegistration={onRegist}/>
-          <Box width={600} height={600}>
-            <ScatterTeachersDistribution teacherType={teacherName} newTeacherState={newData}></ScatterTeachersDistribution>
-          </Box>
-        </Paper>
-        <Box sx={{textAlign: 'center'}}>
+        <Grid container justifyContent="center" alignItems="center" spacing={3}>
+          <Grid item>
+            <DashBoard>
+              <Box sx={{p: 2}}>
+                <PersonAnnotator
+                 teacherType={teacherName}
+                 labels={labels}
+                 callbackRegistration={onRegist}/>
+              </Box>
+            </DashBoard>
+           </Grid>
+          <Grid item>
+            <DashBoard>
+              <ScatterTeachersDistribution teacherType={teacherName} newTeacherState={newData} />
+            </DashBoard>
+          </Grid>
+        </Grid>
+        <Box sx={{textAlign: 'center', mt: 3}}>
           <TeachersTable teacherType={teacherName} limit={10}></TeachersTable>
         </Box>
      </>
     )
+
+
 }

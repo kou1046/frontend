@@ -6,6 +6,7 @@ import axios from "axios";
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Box from "@mui/material/Box"
+import { CircularProgress } from "@mui/material";
 
 type PropsType = {
     labels: Array<string>
@@ -59,13 +60,13 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
 
     return <>
             {people.length ?
-                <Box sx={{textAlign: 'center', m:3}}>
-                    <Box component={'h1'}>Add teacher</Box>
+                <Box sx={{textAlign: "center"}}>
+                    <Box component={"h3"}>教師データを追加する</Box>
                     <img
                         src={`data:image/jpeg;base64,${personImg}`} 
                         alt={`person-${people[index].box.id}`} 
-                        width={400}
-                        height={300}
+                        width={380}
+                        height={250}
                         />
                     <ButtonGroup sx={{display:'flex', justifyContent:'center'}}>
                         {labels.map((el, i) => <Button 
@@ -79,7 +80,7 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
                 </Box>
             :
             <>
-                Now Loading...
+                <CircularProgress />
             </>
             }
     </>
