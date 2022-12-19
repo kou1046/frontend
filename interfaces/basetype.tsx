@@ -106,6 +106,12 @@ export interface Device {
     id: string;
 }
 
+export interface InferenceModel {
+    name: string; 
+    labelDescription: string; 
+    id: string; 
+}
+
 export interface PageNationContents<T> {
     count: number; 
     next: string | null; 

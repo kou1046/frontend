@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                  }}>
         <Box component={"ul"}><Link href="/">HOME</Link></Box>
         <Box component={"ul"} sx={{ml: "auto"}}><Link href="/groups">Groups</Link></Box>
-        <Box component={"ul"}><Link href="/teachers/wth">Teachers</Link></Box>
+        <Box component={"ul"}><Link href="/teachers">Teachers</Link></Box>
         <Box component={"ul"}>Drags</Box>
       </Box>
     </Box>
