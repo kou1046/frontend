@@ -109,7 +109,15 @@ export interface Device {
 export interface InferenceModel {
     name: string; 
     labelDescription: string; 
-    id: string; 
+    id: string;
+}
+
+export interface ModelInfo {
+    epoch: number;
+    trainAccs: Array<number>;
+    testAccs: Array<number>;
+    testPredY: Array<number>;
+    testTrueY: Array<number>;
 }
 
 export interface PageNationContents<T> {

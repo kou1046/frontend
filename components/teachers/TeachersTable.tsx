@@ -12,17 +12,17 @@ import { useEffect, useState } from 'react';
 
 
 type PropsType = {
-    teacherType: string, 
+    modelId: string, 
     limit: number, 
 };
 
-export const TeachersTable = ({teacherType, limit}:PropsType) => {
+export const TeachersTable = ({modelId, limit}:PropsType) => {
 
     const [teachersData, setTeachersData] = useState<PageNationContents<ITeacher2>>();
 
     const fetchTeachers = async (pageNum: number) => {
       const offset = (pageNum - 1) * limit
-      const res = await axios.get(`/${teacherType}/`, {
+      const res = await axios.get(`models/${modelId}/teachers/`, {
         params: {
           limit: limit, 
           offset: offset

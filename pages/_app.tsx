@@ -2,9 +2,7 @@ import '../styles/globals.css'
 import Link from 'next/link';
 import type { AppProps } from 'next/app'
 import axios from 'axios'
-import { Chart, registerables, defaults } from 'chart.js';
-import Select from '@mui/material';
-import MenuItem from '@mui/material';
+import { Chart, registerables, defaults, } from 'chart.js';
 import { Box } from "@mui/material"
 
 axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_HOST}/api`
@@ -27,8 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                  }}>
         <Box component={"ul"}><Link href="/">HOME</Link></Box>
         <Box component={"ul"} sx={{ml: "auto"}}><Link href="/groups">Groups</Link></Box>
-        <Box component={"ul"}><Link href="/teachers">Teachers</Link></Box>
-        <Box component={"ul"}>Drags</Box>
+        <Box component={"ul"}><Link href="/models">Models</Link></Box>
       </Box>
     </Box>
     <Component {...pageProps} />

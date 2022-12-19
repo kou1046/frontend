@@ -8,18 +8,17 @@ import { CircularProgress } from "@mui/material";
 type PlotData = Array<Array<ITeacher2>>;
 
 type PropsType = {
-    teacherType: string; 
+    modelId: string; 
     newTeacherState?: ITeacher2; 
 };
 
-
-export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribution({teacherType, newTeacherState}: PropsType) {
+export const ScatterTeachersDistribution = memo(function ScatterTeachersDistribution({modelId, newTeacherState}: PropsType) {
 
     const [plotData, setPlotData] = useState<PlotData>([]);
     const chartRef = useRef<Chart<"scatter">>(null);
 
     const fetchPlotData = async () => {
-        const res = await axios.get(`/${teacherType}/distribution/`);
+        const res = await axios.get(`/models/${modelId}/teachers/distribution/`);
         setPlotData(res.data);
     }
 

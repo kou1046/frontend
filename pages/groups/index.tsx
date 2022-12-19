@@ -1,27 +1,27 @@
-import Link from 'next/link'
+import Link from 'next/link';
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Group, PageNationContents } from "../../interfaces/basetype"
-import { DashBoard } from '../../components/DashBoard'
-import { Box } from '@mui/system'
-import { Grid } from '@mui/material'
+import { GetStaticPaths, GetStaticProps } from 'next';
+import axios from 'axios';
+import { Group, PageNationContents } from "../../interfaces/basetype";
+import { DashBoard } from '../../components/DashBoard';
+import { Box } from '@mui/system';
+import { Grid } from '@mui/material';
 
-export default function Home () {
+type PageProps = {
+  groups: PageNationContents<Group>
+};
 
-    const [groups, setGruops] = useState<PageNationContents<Group>>();
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  const res = await axios.get<PageNationContents<Group>>("/groups/"); 
+  const props = {groups: res.data}; 
+  return { props }
+}
 
-    const fetchGroups = async () => {
-      const res = await axios.get<PageNationContents<Group>>("/groups/")
-      setGruops(res.data);
-    }
-  
-    useEffect(() => {
-      fetchGroups();
-    }, [])
-  
+export default function Home ({ groups }: PageProps) {
+
     return <>
       <Grid container justifyContent={"center"} spacing={3}>
-        {groups?.results.map(group => {
+        {groups.results.map(group => {
           return (
             <Grid key={`Group-${group.name}`} item>
               <Link href={`/groups/${group.name}/`}>

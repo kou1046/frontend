@@ -8,6 +8,7 @@ import { Box } from "@mui/material"
 import { Paper } from "@mui/material";
 import { Slider } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { ScatterDragDistribution } from "../../components/groups/ScatterDragDistribution";
 
 type pathName = {
     groupName: string;
@@ -49,10 +50,11 @@ export default function Home ({groupName}: pathName) {
         setFrameImg(res2.data);
         setScreenshotImg(res3.data)
     }
-
+   
     useEffect(() => {
         fetchFrames();
     }, [frameNum])
+
 
     return (
         <>
@@ -74,13 +76,18 @@ export default function Home ({groupName}: pathName) {
                 </DashBoard>
                </Grid> 
             ))}
-            <Grid item xs={8}>
+            <Grid item xs={10}>
               <Slider 
                 value={frameNum}
                 onChange={(e, num) => setFrameNum(num as number)}
                 min={1}
                 max={180000}
               />
+            </Grid>
+            <Grid item xs={10}>
+            <DashBoard>
+                <ScatterDragDistribution groupName={groupName} dataOnClick={(x, y) => setFrameNum(x)}></ScatterDragDistribution>
+            </DashBoard>
             </Grid>
         </Grid>
         </>

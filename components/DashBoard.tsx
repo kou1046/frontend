@@ -7,7 +7,7 @@ type PropsType = {
 
 export const DashBoard = ({children}: PropsType) => {
     return (
-        <Paper elevation={3} sx={{
+        <Paper elevation={10} sx={{
             height:400, 
             overflow: "hidden",
             display: "flex",

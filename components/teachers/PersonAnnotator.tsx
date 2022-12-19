@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { ITeacher2, Person2 } from "../../interfaces/basetype"
+import { InferenceModel, ITeacher2, Person2 } from "../../interfaces/basetype"
 import { Dispatch } from "react";
 import Image from "next/image";
 import axios from "axios";
@@ -9,19 +9,18 @@ import Box from "@mui/material/Box"
 import { CircularProgress } from "@mui/material";
 
 type PropsType = {
-    labels: Array<string>
-    teacherType: string
+    model: InferenceModel
     callbackRegistration?: (newTeacher: ITeacher2) => void
 };
 
-export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: PropsType) => {
+export const PersonAnnotator = ({model, callbackRegistration}: PropsType) => {
 
     const [people, setPeople] = useState<Array<Person2>>([]);
     const [personImg, setPersonImg] = useState<string>("");
     const [index, setIndex] = useState<number>(0);
 
     const fetchPeople = async () => {
-        const res = await axios.get(`/${teacherType}/add/`);
+        const res = await axios.get(`/models/${model.id}/teachers/add/`);
         const res2 = await axios.get(`/people/${res.data[0].id}/screenimg/`);
         setPeople(res.data);
         setPersonImg(res2.data);
@@ -30,7 +29,8 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
     const send = async (e: any ,label: number) => {
         const sendData = {
             person: people[index].id,
-            label: label
+            label: label, 
+            model: model.id
         }
 
         const newTeacher = {
@@ -38,7 +38,7 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
             label: label
         }
 
-        const res = await axios.post(`/${teacherType}/`, sendData)
+        const res = await axios.post(`models/${model.id}/teachers/`, sendData)
 
         if (callbackRegistration){
             callbackRegistration(newTeacher);
@@ -57,11 +57,11 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
     useEffect(() => {
         fetchPeople()
     }, [])
-
+    
     return <>
             {people.length ?
                 <Box sx={{textAlign: "center"}}>
-                    <Box component={"h3"}>教師データを追加する</Box>
+                    <Box component={"h3"}>教師データの追加</Box>
                     <img
                         src={`data:image/jpeg;base64,${personImg}`} 
                         alt={`person-${people[index].box.id}`} 
@@ -69,13 +69,15 @@ export const PersonAnnotator = ({teacherType, labels, callbackRegistration}: Pro
                         height={250}
                         />
                     <ButtonGroup sx={{display:'flex', justifyContent:'center'}}>
-                        {labels.map((el, i) => <Button 
-                                                variant="contained"
-                                                key={`btn-${i}`}
-                                                onClick={(e) => send(e, i)}
-                                                >{el}
-                                                </Button>
-                                                )}
+                        {model.labelDescription
+                        .split("_")
+                        .map((el, i) => <Button 
+                                         variant="contained"
+                                         key={`btn-${i}`}
+                                         onClick={(e) => send(e, i)}
+                                         >{el}
+                                         </Button>
+                                         )}
                     </ButtonGroup>
                 </Box>
             :
