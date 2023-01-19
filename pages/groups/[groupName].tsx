@@ -57,7 +57,9 @@ export default function Home({ groupName }: pathName) {
   return (
     <>
       <div className="container mx-auto mt-3 text-center">
-        Group: {groupName} Frame: {frameNum}
+        <h1>
+          Group: {groupName} Frame: {frameNum}
+        </h1>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {[frameImg, screenshotImg].map((el, i) => (
             <DashBoard>

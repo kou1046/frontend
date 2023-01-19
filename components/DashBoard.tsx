@@ -7,8 +7,8 @@ type PropsType = {
 };
 
 export const DashBoard = ({ children, className }: PropsType) => {
-  const defaultStyle =
-    "flex h-[400px] flex-col justify-center items-center rounded-2xl border-2 border-black shadow-2xl ";
+  const defaultStyle = `flex h-[400px] flex-col justify-center items-center rounded-2xl border-2 border-black shadow-2xl 
+     hover:scale-105 transition cursor-pointer `;
   const style = className ? defaultStyle + className : defaultStyle;
 
   return <div className={style}>{children}</div>;

@@ -1,6 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Chart } from "chart.js/auto";
+import annotationPlugin from "chartjs-plugin-annotation";
 import { useState, useEffect, useRef } from "react";
 import { Scatter, getElementAtEvent } from "react-chartjs-2";
 
