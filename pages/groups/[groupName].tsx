@@ -56,34 +56,27 @@ export default function Home({ groupName }: pathName) {
 
   return (
     <>
-      <Box sx={{ textAlign: "center" }}>
-        <Box component="h1">
-          {" "}
-          Group: {groupName} Frame: {frameNum}
-        </Box>
-      </Box>
-      <Grid container justifyContent={"center"} spacing={3}>
-        {[frameImg, screenshotImg].map((el, i) => (
-          <Grid item key={`gruop-${groupName}-img-${i}`}>
+      <div className="container mx-auto mt-3 text-center">
+        Group: {groupName} Frame: {frameNum}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {[frameImg, screenshotImg].map((el, i) => (
             <DashBoard>
               <>
-                <Image src={`data:image/jpeg;base64,${el}`} alt={""} width={350} height={250} key={`img-${i}`} />
+                <img src={`data:image/jpeg;base64,${el}`} alt={""} width={"350px"} height={"250px"} key={`img-${i}`} />
               </>
             </DashBoard>
-          </Grid>
-        ))}
-        <Grid item xs={10}>
-          <Slider value={frameNum} onChange={(e, num) => setFrameNum(num as number)} min={1} max={180000} />
-        </Grid>
-        <Grid item xs={10}>
-          <DashBoard>
-            <ScatterDragDistribution
-              groupName={groupName}
-              dataOnClick={(x, y) => setFrameNum(x)}
-            ></ScatterDragDistribution>
-          </DashBoard>
-        </Grid>
-      </Grid>
+          ))}
+          <div className="col-span-2">
+            <Slider value={frameNum} onChange={(e, num) => setFrameNum(num as number)} min={1} max={180000} />
+            <DashBoard>
+              <ScatterDragDistribution
+                groupName={groupName}
+                dataOnClick={(x, y) => setFrameNum(x)}
+              ></ScatterDragDistribution>
+            </DashBoard>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

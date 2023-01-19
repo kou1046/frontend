@@ -15,28 +15,19 @@ axios.interceptors.response.use(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Box sx={{ width: "100%" }}>
-        <Box
-          component={"li"}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            backgroundColor: "lightgray",
-            m: "20px 0",
-            p: "0 20em",
-          }}
-        >
-          <Box component={"ul"}>
+      <nav className="container mx-auto h-12">
+        <li className="grid h-12 grid-cols-3 items-center bg-gray-200 text-center">
+          <ul className="">
             <Link href="/">HOME</Link>
-          </Box>
-          <Box component={"ul"} sx={{ ml: "auto" }}>
+          </ul>
+          <ul>
             <Link href="/groups">Groups</Link>
-          </Box>
-          <Box component={"ul"}>
+          </ul>
+          <ul>
             <Link href="/models">Models</Link>
-          </Box>
-        </Box>
-      </Box>
+          </ul>
+        </li>
+      </nav>
       <Component {...pageProps} />
     </>
   );

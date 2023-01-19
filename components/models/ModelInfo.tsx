@@ -21,14 +21,13 @@ export const ModelInfoVisual = ({ modelInfo }: PropsType) => {
       label: labels[i],
       data: accs,
       borderColor: colors[i],
-      borderWidth: 1.5,
       backgroundColor: colors[i],
-      pointBorderColor: "white",
-      pointBorderWidth: 2.5,
-      pointRadius: 3,
+      borderWidth: 1.5,
+      pointRadius: 0,
     })),
   };
   const options = {
+    maintainAspectRatio: false,
     scales: {
       x: {
         title: {
