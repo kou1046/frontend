@@ -6,7 +6,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { DashBoard } from "../../components/DashBoard";
 import { ScatterDragDistribution } from "../../components/groups/ScatterDragDistribution";
-import { PageNationContents, Frame, Group } from "../../interfaces/basetype";
+import ActionSyncChart from "components/groups/ActionSyncChart";
+import { PageNationContents, Frame, Group, ActionSync } from "../../interfaces/basetype";
 
 type pathName = {
   groupName: string;
@@ -36,6 +37,13 @@ export default function Home({ groupName }: pathName) {
   const [frameImg, setFrameImg] = useState<string>("");
   const [screenshotImg, setScreenshotImg] = useState<string>("");
   const [frameNum, setFrameNum] = useState<number>(1);
+  const [actionSyncs, setActionSyncs] = useState<Array<ActionSync>>([]);
+
+  const fetchActionSyncs = async () => {
+    const res = await axios.get<Array<ActionSync>>(`/groups/${groupName}/actionsync/`);
+    console.log(res.data);
+    setActionSyncs(res.data);
+  };
 
   const fetchFrames = async () => {
     const res = await axios.get<PageNationContents<Frame>>("/frames/", {
@@ -52,24 +60,27 @@ export default function Home({ groupName }: pathName) {
 
   useEffect(() => {
     fetchFrames();
+    fetchActionSyncs();
   }, [frameNum]);
 
   return (
     <>
-      <div className="container mx-auto mt-3 text-center">
-        <h1>
-          Group: {groupName} Frame: {frameNum}
-        </h1>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="container mx-auto mt-3">
+        <div className="border-2 border-black">
+          {actionSyncs.length
+            ? actionSyncs.map((sync) => <ActionSyncChart actionSync={sync} dataOnClick={(x, y) => setFrameNum(x)} />)
+            : null}
+          <h1 className="text-center">Frame</h1>
+        </div>
+        Group: {groupName} Frame: {frameNum}
+        <Slider value={frameNum} onChange={(e, num) => setFrameNum(num as number)} min={1} max={180000} />
+        <div className="grid grid-cols-2 gap-5 border-2">
           {[frameImg, screenshotImg].map((el, i) => (
-            <DashBoard>
-              <>
-                <img src={`data:image/jpeg;base64,${el}`} alt={""} width={"350px"} height={"250px"} key={`img-${i}`} />
-              </>
-            </DashBoard>
+            <div className="mx-auto">
+              <Image src={`data:image/jpeg;base64,${el}`} alt={""} width={800} height={500} key={`img-${i}`} />
+            </div>
           ))}
           <div className="col-span-2">
-            <Slider value={frameNum} onChange={(e, num) => setFrameNum(num as number)} min={1} max={180000} />
             <DashBoard>
               <ScatterDragDistribution
                 groupName={groupName}
@@ -78,6 +89,7 @@ export default function Home({ groupName }: pathName) {
             </DashBoard>
           </div>
         </div>
+        <div className="grid grid-cols-3 border-2"></div>
       </div>
     </>
   );
