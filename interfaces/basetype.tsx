@@ -132,8 +132,17 @@ export type ActionTrend = {
   data: Array<number>;
 };
 
+export type ActionVariation = {
+  id: number;
+  action_trends: Array<ActionTrend>;
+};
+
 export type ActionSync = {
   ids: Array<number>;
-  imgs: Array<string>;
   pair_trends: Array<ActionTrend>;
+};
+
+export type Member = {
+  id: number;
+  img: string;
 };

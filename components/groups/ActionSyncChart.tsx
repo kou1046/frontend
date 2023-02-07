@@ -2,7 +2,7 @@ import { Chart } from "chart.js/auto";
 import { Line, getElementAtEvent } from "react-chartjs-2";
 import { ActionTrend } from "interfaces/basetype";
 import { ActionSync } from "interfaces/basetype";
-import { useRef } from "react";
+import { useRef, memo } from "react";
 
 Chart.register();
 
@@ -18,14 +18,12 @@ const ActionSyncChart = ({ actionSync, dataOnClick }: PropsType) => {
     <>
       <div className="grid grid-cols-4">
         <div className="mx-auto flex items-center">
-          <img src={`data:image/jpg;base64,${actionSync.imgs[0]}`} width={60} height={60} />
           <h1>
             {actionSync.ids[0]}&{actionSync.ids[1]}
           </h1>
-          <img src={`data:image/jpg;base64,${actionSync.imgs[1]}`} width={60} height={60} />
         </div>
         {actionSync.pair_trends.map((trend, i) => (
-          <TrendChart {...trend} color={colors[i]} dataOnClick={dataOnClick} />
+          <TrendChart key={`trend-${i}`} {...trend} color={colors[i]} dataOnClick={dataOnClick} />
         ))}
       </div>
     </>
@@ -78,4 +76,4 @@ const TrendChart = ({
   return <Line data={plotData} options={options} ref={chartRef} onClick={onClick}></Line>;
 };
 
-export default ActionSyncChart;
+export default memo(ActionSyncChart);
